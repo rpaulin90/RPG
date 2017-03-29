@@ -113,6 +113,11 @@ $(document).ready(function() {
             defenseDamage = $(".currentEnemy").attr("power");
             defenseHealth = parseInt(defenseHealth) - parseInt(attackDamage);
 
+            $(".summaryOfEvents").html(
+                "<p>You attacked "+ $(".currentEnemy").attr("fullName") + " for " + attackDamage + " damage!</p>" +
+                "<p>"+ $(".currentEnemy").attr("fullName") + " attacked you for " + defenseDamage + " damage!</p>"
+            );
+
             if(defenseHealth <= 0){
                 enemiesDefeated++;
                 console.log(enemiesDefeated);
@@ -126,6 +131,7 @@ $(document).ready(function() {
                     $(".character_chosen").empty();
                     $(".enemies_available").empty();
                     $(".defender").empty();
+                    $(".summaryOfEvents").empty();
                     startGame();
                 }
                 else{
@@ -133,7 +139,7 @@ $(document).ready(function() {
                     "<p>You have defeated: " + $(".currentEnemy").attr("fullName") + "</p>");
                     enemyChosen = false;
                     $(".defender").empty();
-                    defenseDamage = 0;
+                    defenseDamage = 0; 
                 }
             }
             attackHealth = parseInt(attackHealth) - parseInt(defenseDamage);
@@ -142,11 +148,6 @@ $(document).ready(function() {
             attackCounter++;
             $(".myCharacter").find(".health").html(attackHealth);
             $(".currentEnemy").find(".health").html(defenseHealth);
-            var summary = 
-            $(".summaryOfEvents").html(
-                "<p>You attacked "+ $(".currentEnemy").attr("fullName") + " for " + attackDamage + " damage!</p>" +
-                "<p>"+ $(".currentEnemy").attr("fullName") + " attacked you for " + defenseDamage + " damage!</p>"
-            );
             if(attackHealth <= 0){
                // $(".summaryOfEvents").html(
                //  "<p>You were defeated by: " + $(".currentEnemy").attr("fullName") + "</p>");

@@ -7,6 +7,8 @@ $(document).ready(function() {
 
     var hp = [120,100,150,180];
 
+    var damage_inflicted = [8,5,20,25];
+
     var characterChosen = false;
 
     var enemyChosen = false;
@@ -20,17 +22,19 @@ $(document).ready(function() {
 
             var img = $("<img>");     
 
-            var health = $("<div>");
+            var health = $("<div class='health'>");
 
             characterBtn.addClass("character");
 
             characterBtn.addClass("characterAvailable");
 
-            characterBtn.attr("value",hp[x])
+            characterBtn.attr("value",hp[x]);
+
+            characterBtn.attr("power",damage_inflicted[x]);
 
             img.attr("src");
 
-            health.text(hp[x]);
+            health.text(characterBtn.attr("value"));
 
             character_name.text(characterFullNames[x]);
 
@@ -64,19 +68,36 @@ $(document).ready(function() {
 
         $(".myEnemies").on("click", function(event){
 
-            console.log("you clicked on myEnemies");
-
             if(enemyChosen === false && characterChosen === true){
                 $(".defender").append($(this));
                 $(this).addClass("currentEnemy");
                 $(this).removeClass("myEnemies");
                 enemyChosen = true;
             }
-
         });
 
+        
 
-    });
+            $(".attack").on("click", function(event){
+
+                if(enemyChosen === true){
+
+                    var attackHealth = $(".myCharacter").attr("value");
+                    var defenseHealth = $(".currentEnemy").attr("value");
+                    var attackDamage = $(".myCharacter").attr("power");
+                    var defenseDamage = $(".currentEnemy").attr("power");
+                    
+                    attackHealth = parseInt(attackHealth) - parseInt(defenseDamage);
+                    defenseHealth = parseInt(defenseHealth) - parseInt(attackDamage);
+
+                    $(".myCharacter").find(".health").text(attackHealth);
+                    $(".currentEnemy").find(".health").text(defenseHealth);
+                }
+
+            })   
+
+
+     });
 
 
 });

@@ -22,6 +22,8 @@ $(document).ready(function() {
 
     var enemiesDefeated = 0;
 
+    var endOfGame = false;
+
     var startGame = function(){
         for(var x = 0; x < characters.length; x++){
 
@@ -91,7 +93,7 @@ $(document).ready(function() {
 
     $(document).on("click", ".attack",function(event){
 
-        if(characterChosen === false){
+        if(characterChosen === false && endOfGame === false){
             var chooseFirst = $(".chooseReminder").html(
                 "<p>Choose a character first</p>"
             );
@@ -122,17 +124,14 @@ $(document).ready(function() {
                 enemiesDefeated++;
                 console.log(enemiesDefeated);
                 if(enemiesDefeated === characters.length-1){
-                    alert("you won! game will restart");
+                    $(".summaryOfEvents").html(
+                    "<p>You Won!!! GAME OVER!!! reset the game to play again</P>");
                     characterChosen = false;
                     enemyChosen = false;
-                    attackCounter = 1;
-                    enemiesDefeated = 0;
+                    endOfGame = true;
                     defenseDamage = 0;
-                    $(".character_chosen").empty();
-                    $(".enemies_available").empty();
                     $(".defender").empty();
-                    $(".summaryOfEvents").empty();
-                    startGame();
+                    
                 }
                 else{
                     $(".summaryOfEvents").html(
@@ -149,82 +148,34 @@ $(document).ready(function() {
             $(".myCharacter").find(".health").html(attackHealth);
             $(".currentEnemy").find(".health").html(defenseHealth);
             if(attackHealth <= 0){
-               // $(".summaryOfEvents").html(
-               //  "<p>You were defeated by: " + $(".currentEnemy").attr("fullName") + "</p>");
+               $(".summaryOfEvents").html(
+                "<p>You were defeated by: " + $(".currentEnemy").attr("fullName") + "</p>");
                 characterChosen = false;
                 enemyChosen = false;
-                attackCounter = 1;
-                enemiesDefeated = 0;
-                $(".character_chosen").empty();
-                $(".enemies_available").empty();
+                endOfGame = true;
                 $(".defender").empty();
-                startGame();
             }
 
         }
 
     });   
 
+    $(".reset").on("click", function(){
+
+        characterChosen = false;
+        enemyChosen = false;
+        attackCounter = 1;
+        enemiesDefeated = 0;
+        endOfGame = false;
+        $(".character_chosen").empty();
+        $(".enemies_available").empty();
+        $(".defender").empty();
+        $(".summaryOfEvents").empty();
+        startGame();
+
+    });
+
 
 });
 
- // var characters = ["obi", "luke", "sidius", "maul"];
-
-    // // var characterFullNames = ["Obi-Wan","Luke Skywalker","Darth-Sidius","Darth-Maul"];
-
-    // // var hp = [120,100,150,180];
-
-    // // var damage_inflicted = [8,5,20,25];
-
-    // var characterChosen = false;
-
-    // var enemyChosen = false;
-
-    // $(".health").text($(".character").attr("value"));
-
-
-    // $(".characterAvailable").on("click", function(event){
-
-
-    //     if(characterChosen === false){
-    //         $(".enemies_available").append($(".character"));
-    //         $(".character_chosen").append($(this));
-    //         $(".character").removeClass("characterAvailable");
-    //         $(".character").addClass("myEnemies");
-    //         $(this).addClass("myCharacter");
-    //         $(this).removeClass("myEnemies");
-    //         characterChosen = true;
-    //     }
-
-    // });
-
-
-    // $(document).on("click", ".myEnemies",function(event){
-
-    //     if(enemyChosen === false && characterChosen === true){
-    //         $(".defender").append($(this));
-    //         $(this).addClass("currentEnemy");
-    //         $(this).removeClass("myEnemies");
-    //         enemyChosen = true;
-    //     }
-    // });
-
-    
-
-    // $(".attack").on("click", function(event){
-
-    //     if(enemyChosen === true){
-
-    //         var attackHealth = $(".myCharacter").attr("value");
-    //         var defenseHealth = $(".currentEnemy").attr("value");
-    //         var attackDamage = $(".myCharacter").attr("power");
-    //         var defenseDamage = $(".currentEnemy").attr("power");
-            
-    //         attackHealth = parseInt(attackHealth) - parseInt(defenseDamage);
-    //         defenseHealth = parseInt(defenseHealth) - parseInt(attackDamage);
-
-    //         $(".myCharacter").find(".health").text(attackHealth);
-    //         $(".currentEnemy").find(".health").text(defenseHealth);
-    //     }
-
-    // })   
+ 

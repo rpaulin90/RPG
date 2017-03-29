@@ -1,9 +1,9 @@
 
 $(document).ready(function() {
 
-    var characters = ["obi", "luke", "sidius", "maul"];
+    var characters = ["batman", "ironman", "superman", "wolverine"];
 
-    var characterFullNames = ["Obi-Wan","Luke Skywalker","Darth-Sidius","Darth-Maul"];
+    var characterFullNames = ["Batman","Ironman","Superman","Wolverine"];
 
     var hp = [120,100,150,180];
 
@@ -24,10 +24,12 @@ $(document).ready(function() {
 
     var endOfGame = false;
 
+    var enemiesLeft = 3;
+
     var startGame = function(){
         for(var x = 0; x < characters.length; x++){
 
-            var characterBtn = $("<div>");
+            var characterBtn = $("<div class='col-xs-6 col-md-3 text-center'>");
 
             var character_name = $("<p>");
 
@@ -45,7 +47,7 @@ $(document).ready(function() {
 
             characterBtn.attr("fullName", characterFullNames[x])
 
-            img.attr("src");
+            img.attr("src","assets/images/"+characters[x]+".png");
 
             health.text(characterBtn.attr("value"));
 
@@ -72,9 +74,11 @@ $(document).ready(function() {
             $(".enemies_available").append($(".character"));
             $(".character").addClass("myEnemies");
             $(".character_chosen").append($(this));
+            $(".character").removeClass("col-xs-6 col-md-3");
             $(".character").removeClass("characterAvailable");
             $(this).addClass("myCharacter");
             $(this).removeClass("myEnemies");
+            $(".myEnemies").addClass("col-xs-4");
             $(".available").empty();
             characterChosen = true;
         }
@@ -83,12 +87,27 @@ $(document).ready(function() {
 
     $(document).on("click", ".myEnemies",function(event){
 
+        enemiesLeft--;
+
         if(enemyChosen === false && characterChosen === true){
             $(".defender").append($(this));
             $(this).addClass("currentEnemy");
             $(this).removeClass("myEnemies");
             enemyChosen = true;
         }
+        if(enemiesLeft == 2){
+            $(this).removeClass("col-xs-4");
+            $(this).addClass("col-xs-12");
+            $(".myEnemies").removeClass("col-xs-4");
+            $(".myEnemies").addClass("col-xs-6");
+        }
+        if(enemiesLeft == 1){
+            $(this).removeClass("col-xs-6");
+            $(this).addClass("col-xs-12");
+            $(".myEnemies").removeClass("col-xs-6");
+            $(".myEnemies").addClass("col-xs-12");
+        }
+
     });
 
     $(document).on("click", ".attack",function(event){
@@ -97,14 +116,14 @@ $(document).ready(function() {
             var chooseFirst = $(".chooseReminder").html(
                 "<p>Choose a character first</p>"
             );
-            chooseFirst.show(1000).hide(1000);
+            chooseFirst.show(2000).hide(2000);
         }
 
         if(characterChosen === true && enemyChosen === false){
             var chooseFirst = $(".chooseReminder").html(
                 "<p>Choose an enemy to attack</p>"
             );
-            chooseFirst.show(1000).hide(1000);
+            chooseFirst.show(2000).hide(2000);
         }
 
         if(characterChosen === true && enemyChosen === true){
@@ -125,7 +144,7 @@ $(document).ready(function() {
                 console.log(enemiesDefeated);
                 if(enemiesDefeated === characters.length-1){
                     $(".summaryOfEvents").html(
-                    "<p>You Won!!! GAME OVER!!! reset the game to play again</P>");
+                    "<p>You Won!!! GAME OVER!!! reset the game to play again.</P>");
                     characterChosen = false;
                     enemyChosen = false;
                     endOfGame = true;
@@ -149,11 +168,10 @@ $(document).ready(function() {
             $(".currentEnemy").find(".health").html(defenseHealth);
             if(attackHealth <= 0){
                $(".summaryOfEvents").html(
-                "<p>You were defeated by: " + $(".currentEnemy").attr("fullName") + "</p>");
+                "<p>You were defeated by: " + $(".currentEnemy").attr("fullName") + ". Press reset to play again.</p>");
                 characterChosen = false;
                 enemyChosen = false;
                 endOfGame = true;
-                $(".defender").empty();
             }
 
         }
@@ -167,6 +185,7 @@ $(document).ready(function() {
         attackCounter = 1;
         enemiesDefeated = 0;
         endOfGame = false;
+        enemiesLeft = 3;
         $(".character_chosen").empty();
         $(".enemies_available").empty();
         $(".defender").empty();

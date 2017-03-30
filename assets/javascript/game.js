@@ -5,6 +5,8 @@ $(document).ready(function() {
 
     var characterFullNames = ["Batman","Ironman","Superman","Wolverine"];
 
+    var enemiesFought = [];
+
     var hp = [120,100,150,180];
 
     var damage_inflicted = [8,5,20,25];
@@ -23,8 +25,6 @@ $(document).ready(function() {
     var enemiesDefeated = 0;
 
     var endOfGame = false;
-
-    var enemiesLeft = 3;
 
     var startGame = function(){
         for(var x = 0; x < characters.length; x++){
@@ -61,6 +61,8 @@ $(document).ready(function() {
 
             $("."+characters[x]).append(characterBtn);
 
+            $(".hideFirst").hide();
+
 
         };
     };
@@ -69,6 +71,7 @@ $(document).ready(function() {
 
     $(document).on("click", ".characterAvailable", function(event){
 
+        $(".hideFirst").show();
 
         if(characterChosen === false){
             $(".enemies_available").append($(".character"));
@@ -87,21 +90,21 @@ $(document).ready(function() {
 
     $(document).on("click", ".myEnemies",function(event){
 
-        enemiesLeft--;
 
         if(enemyChosen === false && characterChosen === true){
             $(".defender").append($(this));
             $(this).addClass("currentEnemy");
             $(this).removeClass("myEnemies");
+            enemiesFought.push($(this).attr("fullName"));
             enemyChosen = true;
         }
-        if(enemiesLeft == 2){
+        if(enemiesFought.length === 1){
             $(this).removeClass("col-xs-4");
             $(this).addClass("col-xs-12");
             $(".myEnemies").removeClass("col-xs-4");
             $(".myEnemies").addClass("col-xs-6");
         }
-        if(enemiesLeft == 1){
+        if(enemiesFought.length === 2){
             $(this).removeClass("col-xs-6");
             $(this).addClass("col-xs-12");
             $(".myEnemies").removeClass("col-xs-6");
@@ -185,7 +188,7 @@ $(document).ready(function() {
         attackCounter = 1;
         enemiesDefeated = 0;
         endOfGame = false;
-        enemiesLeft = 3;
+        enemiesFought = [];
         $(".character_chosen").empty();
         $(".enemies_available").empty();
         $(".defender").empty();

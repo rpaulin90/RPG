@@ -7,26 +7,11 @@ body {
 }
 
 
-.characters_available{
-
-	/*clear:both;*/
-
-
-}
-
 .character {
 
-	/*text-align: center; 
-	/*float: left;*/
 	font-family: 'Special Elite', cursive;
 
 
-}
-
-img {
-
-	/*width: 150px;
-    height: 150px;*/
 }
 
 .title {

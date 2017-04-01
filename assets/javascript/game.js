@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     var hp = [120,100,150,180];
 
-    var damage_inflicted = [8,5,20,25];
+    var damage_inflicted = [15,25,8,5];
 
     var characterChosen = false;
 
